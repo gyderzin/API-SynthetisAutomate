@@ -1,6 +1,5 @@
 from fastapi import FastAPI
-from routes import auth
-from routes import teste_db
+from routes import auth, automate, aplication
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
@@ -9,19 +8,19 @@ app = FastAPI(
     version="1.0.0"
 )
 
-# Configuração de CORS
-origins = [
-    "http://localhost:5173",  # Frontend Vue
-    "http://127.0.0.1:5173",  # Caso use esse também
-]
+# IP local e localhost
 
+# CORS - apenas UMA vez
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,  # Or use ["*"] para liberar tudo (não recomendado em produção)
+    allow_origins=['*'],  # ou ["*"] no desenvolvimento
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["Content-Disposition"]
 )
 
+# Rotas
 app.include_router(auth.router)
-app.include_router(teste_db.router)
+app.include_router(automate.router)
+app.include_router(aplication.router)
